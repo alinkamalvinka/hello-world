@@ -9,8 +9,11 @@ jobs:
   print_hello:
     docker:
       - image: circleci/node:13.8.0
+    environment:
+
     steps:
       - run: echo "hello"
+      - run: echo $author
 
   print_world:
     docker:
