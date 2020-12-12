@@ -7,6 +7,7 @@ Resources:
       KeyName: alina # Notice we are using the udacity as the KeyName. That refers to the key pair we created before
       ImageId: 'ami-068663a3c619dd892'
       InstanceType: t2.micro
+      SubnetId: !Ref PublicSubnet
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -26,3 +27,14 @@ Resources:
       Tags:
         - Key: Name
           Value: 'alinavpc'
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.192.10.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: "alinasubnet"
