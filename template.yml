@@ -1,18 +1,18 @@
 Resources:
   Ec2Instance:
-  Type: 'AWS::EC2::Instance'
-  Properties:
-    SecurityGroups:
-      - !Ref InstanceSecurityGroup
-    KeyName: alina # Notice we are using the udacity as the KeyName. That refers to the key pair we created before
-    ImageId: 'ami-068663a3c619dd892'
-    InstanceType: t2.nano
-  InstanceSecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
+    Type: 'AWS::EC2::Instance'
     Properties:
-      GroupDescription: Enable SSH access via port 22
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: '22'
-          ToPort: '22'
-          CidrIp: 0.0.0.0/0
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      KeyName: alina # Notice we are using the udacity as the KeyName. That refers to the key pair we created before
+      ImageId: 'ami-068663a3c619dd892'
+      InstanceType: t2.nano
+    InstanceSecurityGroup:
+      Type: 'AWS::EC2::SecurityGroup'
+      Properties:
+        GroupDescription: Enable SSH access via port 22
+        SecurityGroupIngress:
+          - IpProtocol: tcp
+            FromPort: '22'
+            ToPort: '22'
+            CidrIp: 0.0.0.0/0
