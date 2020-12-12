@@ -3,34 +3,18 @@ version: 2.1
 # Use a package of configuration called an orb.
 
 jobs:
-  save_hello_world_output:
+  create_infra:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
 
     steps:
-      - run: echo "text to output here" >  /home/circleci/output.txt
-      - persist_to_workspace:
-          root:  /home/circleci
-          path: output.txt
-
-
-  print_output_file:
-    docker:
-      - image: circleci/node:13.8.0
-
-    steps:
-      - run: cat  /home/circleci/output.txt
-      - attach_workspace:
-          at:  /home/circleci
+      - checkout
+      - run: aws cloudformation deploy --template-file template.yml --stack-name udacity
 
 
 workflows:
   # Name the workflow "welcome"
-  welcome:
+  infra:
     # Run the welcome/run job in its own container
     jobs:
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
-
+      - create_infra
