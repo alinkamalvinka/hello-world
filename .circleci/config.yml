@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - checkout
-      - run: aws cloudformation deploy --template-file template.yml --stack-name udacity1
+      - run: aws cloudformation deploy --template-file template.yml --stack-name udacity
 
   configure_infra:
     docker:
@@ -20,7 +20,7 @@ jobs:
           fingerprints: [57:94:65:02:b2:9e:0a:7e:70:52:03:21:c7:ac:f0:28]
       - run:
           name: Install dependencies
-          command: apk add --update ansible
+          command: apt add --update ansible
       - run:
           name: create empty file inventory
           command: echo ["all"] > inventory
