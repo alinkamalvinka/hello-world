@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - checkout
-      - run: aws cloudformation update-stack --template-body template.yml --stack-name udacity
+      - run: aws cloudformation deploy --template-file template.yml --stack-name udacity2
 
   configure_infra:
     docker:
