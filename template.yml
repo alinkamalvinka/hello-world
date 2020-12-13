@@ -6,7 +6,7 @@ Resources:
         - !Ref InstanceSecurityGroup
       KeyName: alina # Notice we are using the udacity as the KeyName. That refers to the key pair we created before
       ImageId: 'ami-068663a3c619dd892'
-      InstanceType: t2.micro
+      InstanceType: t2.nano
       SubnetId: !Ref PublicSubnet
 
   InstanceSecurityGroup:
@@ -29,6 +29,17 @@ Resources:
         - Key: Name
           Value: 'alinavpc'
 
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DependsOn: VPC
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    # Notice how you can't attach an IGW to a VPC unless both are created:
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
   PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -39,3 +50,25 @@ Resources:
       Tags:
         - Key: Name
           Value: "alinasubnet"
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Public
+
+  PublicRoute1:   # Public route table has direct routing to IGW:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
