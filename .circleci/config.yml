@@ -14,7 +14,7 @@ jobs:
       - run:
           name: test server
           command:
-            if curl -s --head "https://google.com" then echo "It worked!" else echo "It failed" fi
+            if [curl -s --head "https://google.com"]; then echo "It worked!" else echo "It failed" fi
 
 
 #  create_infra:
