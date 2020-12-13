@@ -13,14 +13,17 @@ jobs:
 
   configure_infra:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints: [57:94:65:02:b2:9e:0a:7e:70:52:03:21:c7:ac:f0:28]
       - run:
           name: Install dependencies
-          command: apt add --update ansible
+          command: apk add --update ansible
+      - run:
+          name: Install aws cli
+          command: pip install awscli
       - run:
           name: create empty file inventory
           command: echo ["all"] > inventory
