@@ -3,13 +3,13 @@ version: 2.1
 # Use a package of configuration called an orb.
 
 jobs:
-  create_infra:
-    docker:
-      - image: amazon/aws-cli
-
-    steps:
-      - checkout
-      - run: aws cloudformation deploy --template-file template.yml --stack-name udacity
+#  create_infra:
+#    docker:
+#      - image: amazon/aws-cli
+#
+#    steps:
+#      - checkout
+#      - run: aws cloudformation deploy --template-file template.yml --stack-name udacity
 
   configure_infra:
     docker:
@@ -21,17 +21,17 @@ jobs:
       - run:
           name: Install dependencies
           command: apk add --update ansible
-      - run:
-          name: Install aws cli
-          command: pip install awscli<1.16.312
-      - run:
-          name: create empty file inventory
-          command: echo ["all"] > inventory
-      - run:
-          name: Get servers IP
-          command: aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --output text >> inventory
+#      - run:
+#          name: Install aws cli
+#          command: pip install awscli<1.16.312
+#      - run:
+#          name: create empty file inventory
+#          command: echo ["all"] > inventory
+#      - run:
+#          name: Get servers IP
+#          command: aws ec2 describe-instances \
+#            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+#            --output text >> inventory
       - run:
           name:
           command: |
@@ -44,7 +44,7 @@ workflows:
   infra:
     # Run the welcome/run job in its own container
     jobs:
-      - create_infra
+#      - create_infra
       - configure_infra:
-          requires:
-            - create_infra
+#          requires:
+#            - create_infra
