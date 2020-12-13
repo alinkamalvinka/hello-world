@@ -11,6 +11,30 @@ jobs:
       - checkout
       - run: aws cloudformation deploy --template-file template.yml --stack-name udacity
 
+  configure_infra:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: [57:94:65:02:b2:9e:0a:7e:70:52:03:21:c7:ac:f0:28]
+      - run:
+          name: Install dependencies
+          command: apk add --update ansible
+      - run:
+          name: create empty file inventory
+          command: echo ["all"] > inventory
+      - run:
+          name: Get servers IP
+          command: aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text >> inventory
+      - run:
+          name:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ansible-playbook -i inventory playbook.yml
+            fi
 
 workflows:
   # Name the workflow "welcome"
@@ -18,3 +42,6 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - create_infra
+      - configure_infra:
+          requires:
+            - create_infra

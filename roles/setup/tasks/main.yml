@@ -1,0 +1,20 @@
+- name: "update apt packages."
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+
+- name: "install packages"
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+
+- name: Creates directory
+  file:
+    path: ~/web
+    state: directory
