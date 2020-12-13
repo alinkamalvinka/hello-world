@@ -45,6 +45,6 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
 #      - create_infra
-      - configure_infra:
+      - configure_infra
 #          requires:
 #            - create_infra
